@@ -33,7 +33,7 @@ class Genre(models.Model):
 class Movie(models.Model):
     """Model for movies"""
     movie_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    genre = models.ManyToManyField(Genre, related_name='movies')
+    genres = models.ManyToManyField(Genre, related_name='movies')
     title = models.CharField(max_length=255)
     description = models.TextField()
     release_date = models.DateField()
