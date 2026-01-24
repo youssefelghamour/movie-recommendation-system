@@ -64,6 +64,12 @@ class MovieViewSet(viewsets.ModelViewSet):
 
         if serializer.is_valid():
             serializer.save(user=user, movie=movie)
+
+            # If a user rates a movie, we mark it as watched by creating a watch history entry if it doesn't exist
+            user_history = WatchHistory.objects.filter(user=user, movie=movie)
+            if not user_history.exists():
+                WatchHistory.objects.create(user=user, movie=movie)
+
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -74,7 +80,7 @@ class MovieViewSet(viewsets.ModelViewSet):
         movie = self.get_object()
         user = request.user
 
-        # Make sure the user doesn't make this movie as watched twice
+        # Make sure the user doesn't mark this movie as watched twice
         user_history = WatchHistory.objects.filter(user=user, movie=movie)
 
         if user_history.exists():
@@ -146,19 +152,16 @@ class WatchHistoryViewSet(viewsets.ModelViewSet):
             status=status.HTTP_405_METHOD_NOT_ALLOWED
         )
 
-    def delete(self, request, *args, **kwargs):
+    def destroy(self, request, *args, **kwargs):
         """ Allow users to delete their watch history entries
             Since a watch history is created when a user rates a movie, (rated=watched)
             we prevent deletion if there are existing ratings for that user
         """
-        user = request.user
-        movie = self.get_object().movie
-        user_rating = Rating.objects.filter(user=user, movie=movie)
-
-        if not user_rating.exists():
-            return super().delete(request, *args, **kwargs)
-        else:
+        history = self.get_object()
+        movie = history.movie
+        if Rating.objects.filter(user=request.user, movie=movie).exists():
             return Response(
                 {"detail": "Cannot delete watch history while ratings exist. Please delete your ratings first."},
                 status=status.HTTP_400_BAD_REQUEST
             )
+        return super().destroy(request, *args, **kwargs)
