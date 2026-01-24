@@ -35,13 +35,27 @@ class UserSerializer(serializers.ModelSerializer):
 
 class MovieSerializer(serializers.ModelSerializer):
     """Serializer for Movie model"""
-    # Will display genre names thanks to __str__ method in Genre model
-    genres = serializers.StringRelatedField(many=True)
+    genres = serializers.PrimaryKeyRelatedField(
+        queryset=Genre.objects.all(),
+        many=True,
+        write_only=True
+    )
+
+    genre_names = serializers.StringRelatedField(
+        source='genres',
+        many=True,
+        read_only=True
+    )
+
+    # Calculated fields from ratings and watch history & updated with signals
+    average_rating = serializers.FloatField(read_only=True)
+    watch_count = serializers.IntegerField(read_only=True)
 
     class Meta:
         model = Movie
         fields = ['movie_id', 'title', 'description', 'release_date', 'duration',
-                  'cast', 'director', 'language', 'country', 'average_rating', 'watch_count', 'genres']
+                  'cast', 'director', 'language', 'country', 'average_rating',
+                  'watch_count', 'genres', 'genre_names']
 
 
 class GenreSerializer(serializers.ModelSerializer):

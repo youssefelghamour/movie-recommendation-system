@@ -2,6 +2,7 @@ from rest_framework import viewsets, status
 from rest_framework.permissions import IsAuthenticated, AllowAny, IsAdminUser
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication
 from rest_framework.response import Response
+from rest_framework.decorators import action
 
 from .models import User, Movie, Genre, Rating, WatchHistory
 from .serializers import UserSerializer, MovieSerializer, GenreSerializer, RatingSerializer, WatchHistorySerializer
@@ -25,9 +26,68 @@ class UserViewSet(viewsets.ModelViewSet):
 class MovieViewSet(viewsets.ModelViewSet):
     """ Viewset for Movie model with rating and watch actions
         and recommendation features
+        
+            - Public: list, retrieve, top_rated, most_watched, popular
+            - Authenticated: rate, watch, recommended
+            - Admin: create, update, delete
     """
+    authentication_classes = [SessionAuthentication, BasicAuthentication]
+    permission_classes = [IsAuthenticated, IsAdminUser]
     queryset = Movie.objects.all()
     serializer_class = MovieSerializer
+
+    def get_permissions(self):
+        """ Allow unauthenticated access to list and retrieve movies """
+        if self.action in ['rate', 'watch', 'recommended']:
+            return [IsAuthenticated()]
+        if self.action in ["list", "retrieve", "top_rated", "most_watched", "popular"]:
+            return [AllowAny()]
+        return super().get_permissions()
+    
+    @action(detail=True, methods=['post'], permission_classes=[IsAuthenticated])
+    def rate(self, request, pk=None):
+        """ Action for an authenticated user to rate a movie """
+        movie = self.get_object()
+
+        # Make sure the user hasn't rated this movie already
+        # If so they should do an update in RatingViewSet, not create
+        user = request.user
+        user_rating = Rating.objects.filter(user=user, movie=movie)
+
+        if user_rating.exists():
+            return Response(
+                {"detail": "You have already rated this movie. Please update your rating instead in /ratings/<id>/."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        serializer = RatingSerializer(data=request.data)
+
+        if serializer.is_valid():
+            serializer.save(user=user, movie=movie)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    @action(detail=True, methods=['post'], permission_classes=[IsAuthenticated])
+    def watch(self, request, pk=None):
+        """ Action for an authenticated user to mark a movie as watched """
+        movie = self.get_object()
+        user = request.user
+
+        # Make sure the user doesn't make this movie as watched twice
+        user_history = WatchHistory.objects.filter(user=user, movie=movie)
+
+        if user_history.exists():
+            return Response(
+                {"detail": "You have already watched this movie."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        serializer = WatchHistorySerializer(data={})
+        if serializer.is_valid():
+            serializer.save(user=user, movie=movie)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class GenreViewSet(viewsets.ModelViewSet):
