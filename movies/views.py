@@ -4,9 +4,11 @@ from rest_framework.authentication import SessionAuthentication, BasicAuthentica
 from rest_framework.response import Response
 from rest_framework.decorators import action
 from rest_framework.pagination import PageNumberPagination
+from rest_framework.filters import SearchFilter, OrderingFilter
 
 from django.db import models
 from django.db.models import F, FloatField, ExpressionWrapper, Count
+from django_filters.rest_framework import DjangoFilterBackend
 
 from .models import User, Movie, Genre, Rating, WatchHistory
 from .serializers import UserSerializer, MovieSerializer, GenreSerializer, RatingSerializer, WatchHistorySerializer
@@ -45,8 +47,28 @@ class MovieViewSet(viewsets.ModelViewSet):
     authentication_classes = [SessionAuthentication, BasicAuthentication]
     permission_classes = [IsAuthenticated, IsAdminUser]
     pagination_class = CustomPagination
+    filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
     queryset = Movie.objects.all().order_by('-created_at')
     serializer_class = MovieSerializer
+
+    # Exact field filters
+    filterset_fields = {
+        'title': ['icontains'],
+        'director': ['icontains'],
+        'cast': ['icontains'],
+        'genres': ['exact'],  # filter by genre id
+        'language': ['iexact'],
+        'country': ['iexact'],
+        'release_date': ['year', 'gte', 'lte'],
+        'genres__name': ['iexact'],  # case-insensitive: action = Action
+    }
+
+    # Text search
+    search_fields = ['title', 'cast', 'director', 'description']
+
+    # Sorting
+    ordering_fields = ['average_rating', 'watch_count', 'release_date']
+    ordering = ['-created_at']
 
     def get_permissions(self):
         """ Allow unauthenticated access to list and retrieve movies """
@@ -254,8 +276,15 @@ class RatingViewSet(viewsets.ModelViewSet):
     """ Viewset for Rating model """
     authentication_classes = [SessionAuthentication, BasicAuthentication]
     permission_classes = [IsAuthenticated, IsRatingOwner]
+    filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
     queryset = Rating.objects.all()
     serializer_class = RatingSerializer
+    
+    filterset_fields = {
+        'user__username': ['exact', 'icontains'],
+        'movie__title': ['exact', 'icontains'],
+        'score': ['exact', 'gte', 'lte'],
+    }
 
     def create(self, request, *args, **kwargs):
         """ Create a rating is movie specific so it's handled in MovieViewSet rate action """
@@ -275,8 +304,14 @@ class WatchHistoryViewSet(viewsets.ModelViewSet):
     """ Viewset for WatchHistory model """
     authentication_classes = [SessionAuthentication, BasicAuthentication]
     permission_classes = [IsAuthenticated, DenyUpdate, IsHistoryOwner]
+    filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
     queryset = WatchHistory.objects.all()
     serializer_class = WatchHistorySerializer
+    
+    filterset_fields = {
+        'user__username': ['exact', 'icontains'],
+        'movie__title': ['exact', 'icontains'],
+    }
 
     def get_queryset(self):
         """ Authenticated user can only see their own watch history """
