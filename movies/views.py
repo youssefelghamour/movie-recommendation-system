@@ -30,6 +30,14 @@ class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
+    def get_queryset(self):
+        """ Authenticated user can only see their own info """
+        # Admin can see all the users
+        if self.request.user.is_staff:
+            return super().get_queryset()
+        # The logged-in user
+        return super().get_queryset().filter(user_id=self.request.user.user_id)
+
     def get_permissions(self):
         """Allow unauthenticated access to POST /users/ for signup"""
         if self.action == "create":  # signup
