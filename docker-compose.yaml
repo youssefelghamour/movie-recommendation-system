@@ -1,0 +1,41 @@
+version: '3.9'
+
+services:
+  db:
+    image: postgres:17.5
+    container_name: movies_db_container
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    env_file: .env
+    volumes:
+      - movies_db_data:/var/lib/postgresql/data
+    ports:
+      - 5433:5432
+  
+  redis:
+    image: redis:latest
+    container_name: movies_redis_container
+    env_file: .env
+    volumes:
+      - movies_redis_data:/data
+    ports:
+      - 6379:6379
+    
+  web:
+    container_name: movies_web_container
+    build: .
+    command: sh -c "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+      - redis
+    env_file: .env
+
+volumes:
+  movies_db_data:
+  movies_redis_data:
