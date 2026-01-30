@@ -24,6 +24,11 @@ jobs:
           --health-interval=10s
           --health-timeout=5s
           --health-retries=5
+      
+      redis:
+        image: redis:7
+        ports:
+          - 6379:6379
 
     steps:
       # Get the codebase
@@ -71,6 +76,7 @@ jobs:
           DB_PASSWORD: test_pass
           DB_HOST: 127.0.0.1
           DB_PORT: 5432
+          REDIS_HOST: 127.0.0.1
           DJANGO_SETTINGS_MODULE: recommendation_system.settings
         run: |
           # Run pytest with HTML report
