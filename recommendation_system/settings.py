@@ -86,14 +86,7 @@ WSGI_APPLICATION = 'recommendation_system.wsgi.application'
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': env('DB_NAME'),
-        'USER': env('DB_USER'),
-        'PASSWORD': env('DB_PASSWORD'),
-        'HOST': env('DB_HOST'),
-        'PORT': env('DB_PORT'),
-    }
+    'default': env.db_url('DATABASE_URL')
 }
 
 
@@ -169,11 +162,5 @@ SIMPLE_JWT = {
 
 
 CACHES = {
-    "default": {
-        "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": f"redis://{os.environ.get('REDIS_HOST', 'redis')}:6379/0",
-        "OPTIONS": {
-            "CLIENT_CLASS": "django_redis.client.DefaultClient",
-        }
-    }
+    "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
 }
