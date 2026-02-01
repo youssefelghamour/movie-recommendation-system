@@ -21,7 +21,7 @@ class UserSerializer(serializers.ModelSerializer):
         user.set_password(password)  # hash password
         user.save()
         return user
-    
+
     def update(self, instance, validated_data):
         """Update user and hash password if it's being updated"""
         password = validated_data.pop('password', None)
@@ -59,7 +59,7 @@ class MovieSerializer(serializers.ModelSerializer):
         fields = ['movie_id', 'title', 'description', 'release_date', 'duration',
                   'cast', 'director', 'language', 'country', 'average_rating',
                   'watch_count', 'genres', 'genre_names', 'popularity_score']
-    
+
     def to_representation(self, instance):
         """ Round popularity_score to 2 decimal places in the output """
         data = super().to_representation(instance)
@@ -86,7 +86,7 @@ class RatingSerializer(serializers.ModelSerializer):
     class Meta:
         model = Rating
         fields = ['rating_id', 'user_id', 'username', 'movie_id', 'movie_title', 'score', 'review_text']
-    
+
     def validate_score(self, value):
         """Ensurethe score is between 1 and 5 stars"""
         if not (1 <= value <= 5):

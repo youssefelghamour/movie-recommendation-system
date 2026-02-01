@@ -10,8 +10,8 @@ class TestJWT(TestCase):
     def setUp(self):
         self.client = APIClient()
         self.user = User.objects.create_user(
-            email="test@email.com", 
-            password="pass", 
+            email="test@email.com",
+            password="pass",
             username="jwt_test"
         )
 
