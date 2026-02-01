@@ -50,7 +50,7 @@ class UserViewSet(viewsets.ModelViewSet):
 class MovieViewSet(viewsets.ModelViewSet):
     """ Viewset for Movie model with rating and watch actions
         and recommendation features
-        
+
             - Public: list, retrieve, top_rated, most_watched, popular
             - Authenticated: rate, watch, recommended
             - Admin: create, update, delete
@@ -76,7 +76,7 @@ class MovieViewSet(viewsets.ModelViewSet):
         if self.action in ["list", "retrieve", "top_rated", "most_watched", "popular"]:
             return [AllowAny()]
         return super().get_permissions()
-    
+
     # Cache list of movies for 15 min
     @method_decorator(cache_page(60*15))
     def list(self, request, *args, **kwargs):
@@ -114,9 +114,9 @@ class MovieViewSet(viewsets.ModelViewSet):
                 WatchHistory.objects.create(user=user, movie=movie)
 
             return Response(serializer.data, status=status.HTTP_201_CREATED)
-        
+
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
+
     @action(detail=True, methods=['post'], permission_classes=[IsAuthenticated])
     def watch(self, request, pk=None):
         """ Action for an authenticated user to mark a movie as watched """
@@ -147,7 +147,7 @@ class MovieViewSet(viewsets.ModelViewSet):
         # [EDGE CASE]: In case there are no movies with average rating >=3, return top 10 anyway
         if not top_rated_movies.exists():
             top_rated_movies = Movie.objects.all().order_by('-average_rating')
-        
+
         # manually paginate
         page = self.paginate_queryset(top_rated_movies)
         if page is not None:
@@ -156,7 +156,7 @@ class MovieViewSet(viewsets.ModelViewSet):
 
         serializer = self.get_serializer(top_rated_movies, many=True)
         return Response(serializer.data)
-    
+
     @method_decorator(cache_page(60 * 15))
     @action(detail=False, methods=['get'], url_path='most-watched')
     def most_watched(self, request):
@@ -171,7 +171,7 @@ class MovieViewSet(viewsets.ModelViewSet):
 
         serializer = self.get_serializer(most_watched_movies, many=True)
         return Response(serializer.data)
-    
+
     @method_decorator(cache_page(60 * 15))
     @action(detail=False, methods=['get'], url_path='popular')
     def popular(self, request):
@@ -240,7 +240,7 @@ class MovieViewSet(viewsets.ModelViewSet):
                 # cache for 10 min
                 cache.set(cache_key, data, timeout=60 * 10)
                 return self.get_paginated_response(serializer.data)
-            
+
             serializer = self.get_serializer(popular_movies, many=True)
             data = serializer.data
             # cache for 10 min
@@ -266,7 +266,7 @@ class MovieViewSet(viewsets.ModelViewSet):
 
             # union querysets
             recommended_list = recommended_list | genre_movies
-        
+
         """
             Since a movie can belong to many genres, that means it's counted for every genre as a liked movie
             Which inflates genre.liked_movies_count and the proportion
@@ -287,7 +287,7 @@ class MovieViewSet(viewsets.ModelViewSet):
             # cache for 10 min
             cache.set(cache_key, data, timeout=60 * 10)
             return self.get_paginated_response(serializer.data)
-        
+
         serializer = self.get_serializer(recommended_list, many=True)
         data = serializer.data
         # cache for 10 min
@@ -308,7 +308,7 @@ class GenreViewSet(viewsets.ModelViewSet):
         if self.action in ["list", "retrieve"]:
             return [AllowAny()]
         return super().get_permissions()
-    
+
     # Cache list of genres for 1 hour (they change very rarely)
     @method_decorator(cache_page(60*60))
     def list(self, request, *args, **kwargs):
@@ -326,7 +326,7 @@ class RatingViewSet(viewsets.ModelViewSet):
     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
     queryset = Rating.objects.all()
     serializer_class = RatingSerializer
-    
+
     filterset_fields = {
         'user__username': ['exact', 'icontains'],
         'movie__title': ['exact', 'icontains'],
@@ -353,7 +353,7 @@ class WatchHistoryViewSet(viewsets.ModelViewSet):
     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
     queryset = WatchHistory.objects.all()
     serializer_class = WatchHistorySerializer
-    
+
     filterset_fields = {
         'user__username': ['exact', 'icontains'],
         'movie__title': ['exact', 'icontains'],

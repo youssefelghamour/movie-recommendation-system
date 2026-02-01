@@ -13,6 +13,7 @@ def calc_popularity_score(qs):
         )
     )
 
+
 def liked_genres(liked_movies):
     """ Return the top liked genres with count of liked movies in each genre """
     return (
@@ -21,6 +22,7 @@ def liked_genres(liked_movies):
         .annotate(liked_movies_count=Count('movies', filter=models.Q(movies__in=liked_movies)))
         .order_by('-liked_movies_count')
     )
+
 
 def top_movies_for_genre(user, genre, num_to_pick):
     """ Return a number of most popular movies for a genre excluding already rated movies by user """
