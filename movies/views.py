@@ -152,6 +152,30 @@ class MovieViewSet(viewsets.ModelViewSet):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+    @action(detail=True, methods=['post'], permission_classes=[IsAuthenticated])
+    def unwatch(self, request, pk=None):
+        """ Action for an authenticated user to unwatch a movie
+            Allow users to delete their watch history entries
+            Since a watch history is created when a user rates a movie, (rated=watched)
+            we prevent deletion if there are existing ratings for that user
+        """
+        movie = self.get_object()
+        user = request.user
+
+        # Make sure the history exists, the movie is watched by this user
+        history = WatchHistory.objects.filter(user=user, movie=movie).first()
+        if not history:
+            return Response({"detail": "You haven't watched this movie yet."}, status=404)
+
+        if Rating.objects.filter(user=user, movie=movie).exists():
+            return Response(
+                {"detail": "Cannot delete watch history while ratings exist. Please delete your ratings first."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        history.delete()
+        return Response({"detail": "Movie removed from watch history."}, status=204)
+
     @method_decorator(cache_page(60 * 15))  # cache for 15min
     @action(detail=False, methods=['get'], url_path='top-rated')
     def top_rated(self, request):
@@ -389,15 +413,8 @@ class WatchHistoryViewSet(viewsets.ModelViewSet):
         )
 
     def destroy(self, request, *args, **kwargs):
-        """ Allow users to delete their watch history entries
-            Since a watch history is created when a user rates a movie, (rated=watched)
-            we prevent deletion if there are existing ratings for that user
-        """
-        history = self.get_object()
-        movie = history.movie
-        if Rating.objects.filter(user=request.user, movie=movie).exists():
-            return Response(
-                {"detail": "Cannot delete watch history while ratings exist. Please delete your ratings first."},
-                status=status.HTTP_400_BAD_REQUEST
-            )
-        return super().destroy(request, *args, **kwargs)
+        """ Delete a watch history is movie specific so it's handled in MovieViewSet unwatch action """
+        return Response(
+            {"detail": "Use /movies/<id>/unwatch/ instead to delete a watch history (unwatch a movie)."},
+            status=status.HTTP_405_METHOD_NOT_ALLOWED
+        )
