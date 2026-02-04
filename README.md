@@ -7,6 +7,8 @@
 ![Redis](https://img.shields.io/badge/redis-%23DD0031.svg?style=for-the-badge&logo=redis&logoColor=white)
 ![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white)
 ![Swagger](https://img.shields.io/badge/-Swagger-%23Clojure?style=for-the-badge&logo=swagger&logoColor=white)
+![GraphQL](https://img.shields.io/badge/-GraphQL-E10098?style=for-the-badge&logo=graphql&logoColor=white)
+
 
 A movie recommendation API built with Django Rest Framework. It tracks user watch history and ratings to provide a personalized movie discovery experience.
 
@@ -69,6 +71,10 @@ The API is currently deployed and accessible at: [**Movie Recommendation API on 
 The API is fully documented with interactive explorers:
 *   **Swagger UI:** [/api/docs/swagger/](https://youssefelghamour.pythonanywhere.com/api/docs/swagger/) (Best for testing)
 *   **ReDoc:** [/api/docs/redoc/](https://youssefelghamour.pythonanywhere.com/api/docs/redoc/) (Best for reading)
+
+### GraphQL
+[**GraphQL API**](https://youssefelghamour.pythonanywhere.com/graphql/)
+
 
 ## Installation & Setup
 
@@ -177,8 +183,14 @@ Use this if you prefer to run the components separately. Ensure **PostgreSQL** a
 | PUT/PATCH | `/api/genres/<id>/` | Update genre name | Admin Only |
 | DELETE | `/api/genres/<id>/` | Remove a genre | Admin Only |
 
+### GraphQL
+
+The API also exposes a **GraphQL endpoint** allowing clients to fetch movies, ratings, users, and related data in a single request, with support for pagination, ordering, and search.
+
+- **Endpoint:** `/graphql/`
+- **Documentation & Examples:** See the dedicated [GraphQL Guide](./GRAPHQL-GUIDE.md)
+
 ### Next Steps
 *   **Advanced Security:** Implement a dedicated Django app for IP tracking/blocking with management commands and middlewares, automated blacklisting, detecting anomalies with Celery tasks, and rate limiting.
-*   **GraphQL Integration:** Add a GraphQL layer to allow clients to query specific movie metadata without over-fetching, and to include all movie-related data without under-fetching.
 *   **Background Tasks:** Integrate **Celery & Celery Beat with RabbitMQ** for scheduled security audits, detecting and flagging suspicious IPs, database and cache cleanup, and automated logging.
 *   **Orchestration:** Transition from Docker Compose to **Kubernetes (K8s)** for automated scaling and high availability.
