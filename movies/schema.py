@@ -1,6 +1,7 @@
 import graphene
 from graphene_django import DjangoObjectType
 from .models import Movie, Genre, Rating, WatchHistory, User
+from django.db.models import Q
 
 
 # ────────────── TYPES ──────────────
@@ -85,7 +86,9 @@ class Query(graphene.ObjectType):
         genre=graphene.String(required=False), # Optional filter by genre name
         watcher_id=graphene.String(required=False),
         limit=graphene.Int(),
-        offset=graphene.Int()
+        offset=graphene.Int(),
+        order_by=graphene.String(), # e.g. "-average_rating" or by "popularity_score"
+        search=graphene.String(),
     )
 
     movie = graphene.Field(
@@ -103,7 +106,9 @@ class Query(graphene.ObjectType):
         offset=graphene.Int()
     )
 
-    def resolve_movies(self, info, genre=None, watcher_id=None, limit=20, offset=0):
+    # ────────── RESOLVERS ──────────
+
+    def resolve_movies(self, info, genre=None, watcher_id=None, limit=20, offset=0, order_by=None, search=None):
         """ Return all movies
             - Filter by genre if genre name
             - Filter by watcher user id to only return movies the user watched
@@ -114,6 +119,10 @@ class Query(graphene.ObjectType):
             qs = qs.filter(genres__name__iexact=genre)
         if watcher_id:
             qs = qs.filter(watched_by__user_id=watcher_id)
+        if search:
+            qs = qs.filter(Q(title__icontains=search) | Q(description__icontains=search))
+        if order_by:
+            qs = qs.order_by(order_by)
 
         total_count = qs.count()
         qs = qs[offset:offset+limit]
