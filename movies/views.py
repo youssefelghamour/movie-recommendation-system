@@ -5,11 +5,11 @@ from rest_framework.response import Response
 from rest_framework.decorators import action
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.filters import SearchFilter, OrderingFilter
-from django.views.decorators.cache import cache_page
 
 from django.db import models
 from django.db.models import F, FloatField, ExpressionWrapper, Count
 from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
 from django.core.cache import cache
 from django_filters.rest_framework import DjangoFilterBackend
 
