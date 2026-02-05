@@ -36,6 +36,7 @@ The app tracks "Quality" and "Quantity" to decide what is trending:
 
 - **Top Rated:** Lists movies with an average rating of 3.0 or higher.
 - **Most Watched:** Lists movies based strictly on how many people have watched them.
+- **Trending:** Unlike Popular, this list focuses on recent activity (e.g., watches in the last 7 days) to highlight what’s trending right now.
 - **Popular (Hybrid):** This is our main metric. It uses a specific formula:
 
 ### Popularity Score
@@ -47,6 +48,8 @@ This score is used for the "Popular" list and to rank movies within recommendati
 *   **Average Rating (70% weight):** We prioritize movies that people actually liked.
 *   **Watch Count (30% weight):** We also give credit to movies that are being watched frequently.
 
+> **Trending Score Formula:** `(Recent Average Rating * 0.6) + (Recent Watch Count * 0.4)`
+
 ## Caching
 
 Because the recommendation logic and popularity math can be heavy, we use **Redis** to store results.
@@ -56,6 +59,7 @@ Because the recommendation logic and popularity math can be heavy, we use **Redi
 | **Global Lists** | Cached per URL (Popular, Top Rated, etc.) | 15 Minutes |
 | **Genres** | Cached globally (Rarely changes) | 1 Hour |
 | **Recommendations** | Cached **per User ID** (Unique to you) | 10 Minutes |
+| **Trending** | Cached globally | 30 Minutes |
 
 **Memory Refresh (Signals):**
 
@@ -92,9 +96,9 @@ This method automatically sets up your Python environment, PostgreSQL database, 
     ```
 2.  **Build and Run:**
     ```bash
-    docker-compose up --build
+    docker-compose up --build -d
     ```
-3.  **Initialize Data:** Open a new terminal and run:
+3.  **Initialize Data:**
     ```bash
     docker exec -it movies_web_container python manage.py seed
     ```
@@ -154,6 +158,7 @@ Use this if you prefer to run the components separately. Ensure **PostgreSQL** a
 | GET | `/api/movies/popular/` | Top movies by the Popularity Score formula | Public |
 | GET | `/api/movies/top-rated/` | Highest average ratings (minimum 3 stars) | Public |
 | GET | `/api/movies/most-watched/` | Movies with the highest watch counts | Public |
+| GET | `/api/movies/trending/` | Movies currently trending based on recent watch activity | Public |
 
 ### User Accounts
 | Method | Endpoint | Description | Permission |
