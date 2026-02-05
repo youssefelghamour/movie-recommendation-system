@@ -7,11 +7,13 @@ from rest_framework.pagination import PageNumberPagination
 from rest_framework.filters import SearchFilter, OrderingFilter
 
 from django.db import models
-from django.db.models import F, FloatField, ExpressionWrapper, Count
+from django.db.models import F, FloatField, ExpressionWrapper, Count, Avg, Count, Q
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
 from django.core.cache import cache
 from django_filters.rest_framework import DjangoFilterBackend
+from django.utils import timezone
+from django.db.models.functions import Coalesce
 
 from .models import User, Movie, Genre, Rating, WatchHistory
 from .serializers import UserSerializer, MovieSerializer, GenreSerializer, RatingSerializer, WatchHistorySerializer
@@ -73,7 +75,7 @@ class MovieViewSet(viewsets.ModelViewSet):
         """ Allow unauthenticated access to list and retrieve movies """
         if self.action in ['rate', 'watch', 'recommended']:
             return [IsAuthenticated()]
-        if self.action in ["list", "retrieve", "top_rated", "most_watched", "popular"]:
+        if self.action in ["list", "retrieve", "top_rated", "most_watched", "popular", "trending"]:
             return [AllowAny()]
         return super().get_permissions()
 
@@ -332,6 +334,53 @@ class MovieViewSet(viewsets.ModelViewSet):
         cache.set(cache_key, data, timeout=60 * 10)
         return Response(serializer.data)
 
+    @method_decorator(cache_page(60 * 30))  # cache for 30min
+    @action(detail=False, methods=['get'], url_path='trending')
+    def trending(self, request):
+        """ Action to get the trending movies in the past time window the client chooses
+            Logic:
+                1. Annotate the movies list with fields for ratings they have received during this time period
+                2. Likewise for the watch history
+                3. Filter out movies that haven't been rated or watched in this time window
+                4. Annotate the movies remaining with a trending score similar to popularity_score:
+                    recent_avg_rating * 0.6 + recent_watch_count * 0.4
+                5. Order and return the movies in descending order based on this score
+        """
+        # Make sure the client doesn't go beyond the appropriate time window
+        allowed_days = [7, 30]
+        try:
+            # Get the time window from the client or default to 10 previous days
+            days = int(request.query_params.get("days", 7))
+        except ValueError:
+            days = 7
+
+        if days not in allowed_days:
+            days = 7
+
+        # The cutoff date so we only include movies after this date
+        since = timezone.now() - timezone.timedelta(days=days)
+
+        # Filter movies that have been best rated or watched the most during this time period
+        trending_movies = Movie.objects.annotate(
+            recent_avg_rating=Coalesce(Avg('ratings__score', filter=Q(ratings__created_at__gte=since)), 0.0),
+            recent_watch_count=Coalesce(Count('watched_by', filter=Q(watched_by__watched_on__gte=since)), 0)
+        ).filter(
+            Q(recent_watch_count__gt=0) |
+            Q(recent_avg_rating__gt=0)
+        ).annotate(
+            trending_score=ExpressionWrapper(
+                (F('recent_avg_rating') * 0.6) + (F('recent_watch_count') * 0.4),
+                output_field=FloatField()
+            )
+        ).order_by('-trending_score')
+
+        page = self.paginate_queryset(trending_movies)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
+        serializer = self.get_serializer(trending_movies, many=True)
+        return Response(serializer.data)
 
 class GenreViewSet(viewsets.ModelViewSet):
     """ Viewset for Genre model """
