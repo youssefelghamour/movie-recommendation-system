@@ -190,13 +190,14 @@
               }
             ],
             "url": {
-              "raw": "{{base_url}}/api/users",
+              "raw": "{{base_url}}/api/users/{{user_id}}",
               "host": [
                 "{{base_url}}"
               ],
               "path": [
                 "api",
-                "users"
+                "users",
+                "{{user_id}}"
               ]
             }
           },
@@ -245,6 +246,23 @@
           "item": [
             {
               "name": "List Users",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "var jsonData = pm.response.json();\r",
+                      "var user = jsonData.find(u => u.username === \"test\");\r",
+                      "if (user) {\r",
+                      "    pm.environment.set(\"user_id\", user.user_id);\r",
+                      "}"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
               "request": {
                 "method": "GET",
                 "header": [
@@ -890,14 +908,13 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{base_url}}/api/movies/recommended/",
+                  "raw": "{{base_url}}/api/watch-history/",
                   "host": [
                     "{{base_url}}"
                   ],
                   "path": [
                     "api",
-                    "movies",
-                    "recommended",
+                    "watch-history",
                     ""
                   ]
                 }
@@ -1039,6 +1056,172 @@
           "name": "Movie ratings",
           "request": {
             "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/movies/{{movie_id}}/ratings",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "movies",
+                "{{movie_id}}",
+                "ratings"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Trending Movies",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/movies/trending/?days=7/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "movies",
+                "trending",
+                ""
+              ],
+              "query": [
+                {
+                  "key": "days",
+                  "value": "7/"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "GraphQL",
+      "item": [
+        {
+          "name": "List Movies",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "graphql",
+              "graphql": {
+                "query": "query {\r\n  movies(limit: 10, offset: 0) {\r\n    totalCount\r\n    limit\r\n    offset\r\n    items {\r\n      movieId\r\n      title\r\n      averageRating\r\n      genres {\r\n        name\r\n      }\r\n    }\r\n  }\r\n}",
+                "variables": ""
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/graphql/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "graphql",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "List One Movie",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  "pm.variables.set(\"movieId\", pm.environment.get(\"movieId\"));\r",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "graphql",
+              "graphql": {
+                "query": "query GetMovie($movieId: UUID!) {\r\n  movie(movieId: $movieId) {\r\n    title\r\n    description\r\n    averageRating\r\n    watchCount\r\n    popularityScore\r\n    genres {\r\n      name\r\n    }\r\n    watchers {\r\n      username\r\n    }\r\n    myRating\r\n    watchedByMe\r\n  }\r\n}",
+                "variables": "{\r\n  \"movieId\": \"7448b46b-6486-4187-b7f9-84ab1a931abb\"\r\n}\r\n"
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/graphql/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "graphql",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Search a Movie",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "graphql",
+              "graphql": {
+                "query": "query {\r\n  movies(\r\n    genre: \"Action\",\r\n    search: \"Avengers\",\r\n    orderBy: \"-average_rating\",\r\n    limit: 5\r\n  ) {\r\n    totalCount\r\n    limit\r\n    offset\r\n    items {\r\n      movieId\r\n      title\r\n      description\r\n      averageRating\r\n      popularityScore\r\n    }\r\n  }\r\n}",
+                "variables": ""
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/graphql/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "graphql",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Me: User Profile",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
             "header": [
               {
                 "key": "Authorization",
@@ -1051,20 +1234,173 @@
                 "type": "text"
               }
             ],
+            "body": {
+              "mode": "graphql",
+              "graphql": {
+                "query": "query {\r\n  me {\r\n    userId\r\n    username\r\n    email\r\n    firstName\r\n    lastName\r\n  }\r\n}",
+                "variables": ""
+              }
+            },
             "url": {
-              "raw": "{{base_url}}/watch-history/?user__username=test",
+              "raw": "{{base_url}}/graphql/",
               "host": [
                 "{{base_url}}"
               ],
               "path": [
-                "watch-history",
+                "graphql",
                 ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "User Watch History",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "graphql",
+              "graphql": {
+                "query": "query {\r\n  movies(watcherId: \"<USER_ID>\") {\r\n    items {\r\n      movieId\r\n      title\r\n      myRating\r\n      watchedByMe\r\n    }\r\n  }\r\n}",
+                "variables": ""
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/graphql/",
+              "host": [
+                "{{base_url}}"
               ],
-              "query": [
-                {
-                  "key": "user__username",
-                  "value": "test"
-                }
+              "path": [
+                "graphql",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "All Ratings",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "graphql",
+              "graphql": {
+                "query": "query {\r\n  ratings(limit: 10) {\r\n    totalCount\r\n    limit\r\n    offset\r\n    items {\r\n      score\r\n      reviewText\r\n      user {\r\n        username\r\n      }\r\n      movie {\r\n        title\r\n      }\r\n    }\r\n  }\r\n}",
+                "variables": ""
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/graphql/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "graphql",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Ratings for a Movie",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "graphql",
+              "graphql": {
+                "query": "query {\r\n  ratings(movieId: \"<MOVIE_ID>\") {\r\n    totalCount\r\n    limit\r\n    offset\r\n    items {\r\n      score\r\n      user {\r\n        username\r\n      }\r\n    }\r\n  }\r\n}",
+                "variables": ""
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/graphql/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "graphql",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Ratings by a User",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "graphql",
+              "graphql": {
+                "query": "query {\r\n  ratings(userId: \"<USER_ID>\") {\r\n    items {\r\n      score\r\n      movie {\r\n        title\r\n      }\r\n    }\r\n  }\r\n}",
+                "variables": ""
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/graphql/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "graphql",
+                ""
               ]
             }
           },
