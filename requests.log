@@ -1,0 +1,124 @@
+2026-02-10 10:37:10.920474 - User: user0 (user0@email.com) - IP: 172.23.0.1 - Path: /api/
+2026-02-10 10:37:13.085983 - User: user0 (user0@email.com) - IP: 172.23.0.1 - Path: /api/movies/
+2026-02-10 10:37:32.067255 - User: user0 (user0@email.com) - IP: 172.23.0.1 - Path: /api/
+2026-02-10 10:37:33.653969 - User: user0 (user0@email.com) - IP: 172.23.0.1 - Path: /api/genres/
+2026-02-10 10:37:35.605884 - User: user0 (user0@email.com) - IP: 172.23.0.1 - Path: /api/
+2026-02-10 10:37:37.512274 - User: user0 (user0@email.com) - IP: 172.23.0.1 - Path: /api/ratings/
+2026-02-10 10:37:40.483238 - User: user0 (user0@email.com) - IP: 172.23.0.1 - Path: /api/
+2026-02-10 10:37:42.046776 - User: user0 (user0@email.com) - IP: 172.23.0.1 - Path: /api/watch-history/
+2026-02-10 10:37:43.299521 - User: user0 (user0@email.com) - IP: 172.23.0.1 - Path: /api/
+2026-02-10 10:37:46.419170 - User: user0 (user0@email.com) - IP: 172.23.0.1 - Path: /api-auth/logout/
+2026-02-10 10:37:46.521444 - User: Anonymous - IP: 172.23.0.1 - Path: /api/
+2026-02-10 10:37:48.664773 - User: Anonymous - IP: 172.23.0.1 - Path: /api-auth/login/
+2026-02-10 10:37:52.446029 - User: Anonymous - IP: 172.23.0.1 - Path: /api-auth/login/
+2026-02-10 10:37:57.947797 - User: Anonymous - IP: 172.23.0.1 - Path: /api-auth/login/
+2026-02-10 10:38:00.080889 - User: admin (admin@email.com) - IP: 172.23.0.1 - Path: /api/
+2026-02-10 10:38:20.176301 - User: admin (admin@email.com) - IP: 172.23.0.1 - Path: /admin/
+2026-02-10 10:38:22.769361 - User: admin (admin@email.com) - IP: 172.23.0.1 - Path: /admin/auth/group/
+2026-02-10 10:38:23.001575 - User: admin (admin@email.com) - IP: 172.23.0.1 - Path: /admin/jsi18n/
+2026-02-10 10:38:28.772576 - User: admin (admin@email.com) - IP: 172.23.0.1 - Path: /admin/movies/watchhistory/
+2026-02-10 10:38:29.177588 - User: admin (admin@email.com) - IP: 172.23.0.1 - Path: /admin/jsi18n/
+2026-02-10 10:38:32.155714 - User: admin (admin@email.com) - IP: 172.23.0.1 - Path: /admin/django_celery_beat/clockedschedule/
+2026-02-10 10:38:32.323585 - User: admin (admin@email.com) - IP: 172.23.0.1 - Path: /admin/jsi18n/
+2026-02-10 10:38:34.184613 - User: admin (admin@email.com) - IP: 172.23.0.1 - Path: /admin/django_celery_beat/crontabschedule/
+2026-02-10 10:38:34.456830 - User: admin (admin@email.com) - IP: 172.23.0.1 - Path: /admin/jsi18n/
+2026-02-10 10:38:37.534628 - User: admin (admin@email.com) - IP: 172.23.0.1 - Path: /admin/django_celery_beat/crontabschedule/1/change/
+2026-02-10 10:38:38.164195 - User: admin (admin@email.com) - IP: 172.23.0.1 - Path: /admin/jsi18n/
+2026-02-10 10:39:04.666130 - User: admin (admin@email.com) - IP: 172.23.0.1 - Path: /admin/django_celery_beat/periodictask/
+2026-02-10 10:39:05.046193 - User: admin (admin@email.com) - IP: 172.23.0.1 - Path: /admin/jsi18n/
+2026-02-10 10:39:15.199619 - User: admin (admin@email.com) - IP: 172.23.0.1 - Path: /admin/django_celery_beat/periodictask/1/change/
+2026-02-10 10:39:15.844618 - User: admin (admin@email.com) - IP: 172.23.0.1 - Path: /admin/jsi18n/
+2026-02-10 10:40:37.083179 - User: admin (admin@email.com) - IP: 172.23.0.1 - Path: /admin/django_celery_beat/periodictask/
+2026-02-10 10:40:37.221093 - User: admin (admin@email.com) - IP: 172.23.0.1 - Path: /admin/jsi18n/
+2026-02-10 10:41:06.969582 - User: admin (admin@email.com) - IP: 172.23.0.1 - Path: /admin/django_celery_beat/periodictask/
+2026-02-10 10:41:07.338440 - User: admin (admin@email.com) - IP: 172.23.0.1 - Path: /admin/jsi18n/
+2026-02-10 10:41:12.245746 - User: admin (admin@email.com) - IP: 172.23.0.1 - Path: /admin/django_celery_beat/periodictask/2/change/
+2026-02-10 10:41:12.673708 - User: admin (admin@email.com) - IP: 172.23.0.1 - Path: /admin/jsi18n/
+2026-02-10 10:42:41.143547 - User: admin (admin@email.com) - IP: 172.23.0.1 - Path: /api/
+2026-02-10 10:42:44.217437 - User: admin (admin@email.com) - IP: 172.23.0.1 - Path: /api/users/
+2026-02-10 10:42:46.480882 - User: admin (admin@email.com) - IP: 172.23.0.1 - Path: /api/
+2026-02-10 10:42:48.618711 - User: admin (admin@email.com) - IP: 172.23.0.1 - Path: /api/ratings/
+2026-02-10 10:42:49.708262 - User: admin (admin@email.com) - IP: 172.23.0.1 - Path: /api/
+2026-02-10 10:42:50.925301 - User: admin (admin@email.com) - IP: 172.23.0.1 - Path: /api/watch-history/
+2026-02-10 10:42:52.379746 - User: admin (admin@email.com) - IP: 172.23.0.1 - Path: /api/
+2026-02-10 10:42:54.232000 - User: admin (admin@email.com) - IP: 172.23.0.1 - Path: /api/users/
+2026-02-10 10:42:55.805320 - User: admin (admin@email.com) - IP: 172.23.0.1 - Path: /api/
+2026-02-10 10:42:57.889567 - User: admin (admin@email.com) - IP: 172.23.0.1 - Path: /api/movies/
+2026-02-10 10:42:58.958670 - User: admin (admin@email.com) - IP: 172.23.0.1 - Path: /api/
+2026-02-10 10:43:26.158812 - User: admin (admin@email.com) - IP: 172.23.0.1 - Path: /admin/
+2026-02-10 10:43:29.345553 - User: admin (admin@email.com) - IP: 172.23.0.1 - Path: /admin/django_celery_beat/periodictask/
+2026-02-10 10:43:29.661572 - User: admin (admin@email.com) - IP: 172.23.0.1 - Path: /admin/jsi18n/
+2026-02-10 10:43:35.830641 - User: admin (admin@email.com) - IP: 172.23.0.1 - Path: /admin/django_celery_beat/periodictask/2/change/
+2026-02-10 10:43:36.433757 - User: admin (admin@email.com) - IP: 172.23.0.1 - Path: /admin/jsi18n/
+2026-02-10 10:43:39.620880 - User: admin (admin@email.com) - IP: 172.23.0.1 - Path: /admin/django_celery_beat/periodictask/
+2026-02-10 10:43:51.528249 - User: admin (admin@email.com) - IP: 172.23.0.1 - Path: /admin/django_celery_beat/periodictask/
+2026-02-10 10:43:51.876877 - User: admin (admin@email.com) - IP: 172.23.0.1 - Path: /admin/jsi18n/
+2026-02-10 10:43:54.691237 - User: admin (admin@email.com) - IP: 172.23.0.1 - Path: /admin/django_celery_beat/periodictask/
+2026-02-10 10:43:54.895766 - User: admin (admin@email.com) - IP: 172.23.0.1 - Path: /admin/jsi18n/
+2026-02-10 10:44:39.515805 - User: admin (admin@email.com) - IP: 172.23.0.1 - Path: /admin/django_celery_beat/periodictask/
+2026-02-10 10:44:39.666903 - User: admin (admin@email.com) - IP: 172.23.0.1 - Path: /admin/jsi18n/
+2026-02-10 10:47:36.510521 - User: admin (admin@email.com) - IP: 172.23.0.1 - Path: /admin/django_celery_beat/periodictask/
+2026-02-10 10:47:36.889601 - User: admin (admin@email.com) - IP: 172.23.0.1 - Path: /admin/jsi18n/
+2026-02-10 10:47:44.141218 - User: admin (admin@email.com) - IP: 172.23.0.1 - Path: /admin/django_celery_beat/periodictask/2/change/
+2026-02-10 10:47:44.576782 - User: admin (admin@email.com) - IP: 172.23.0.1 - Path: /admin/jsi18n/
+2026-02-10 10:49:05.641411 - User: admin (admin@email.com) - IP: 172.23.0.1 - Path: /admin/django_celery_beat/periodictask/2/change/
+2026-02-10 10:49:06.157025 - User: admin (admin@email.com) - IP: 172.23.0.1 - Path: /admin/jsi18n/
+2026-02-10 10:49:11.902049 - User: admin (admin@email.com) - IP: 172.23.0.1 - Path: /admin/security/suspiciousip/
+2026-02-10 10:49:12.013105 - User: admin (admin@email.com) - IP: 172.23.0.1 - Path: /admin/jsi18n/
+2026-02-10 10:49:16.383449 - User: admin (admin@email.com) - IP: 172.23.0.1 - Path: /admin/security/suspiciousip/1/change/
+2026-02-10 10:49:16.657184 - User: admin (admin@email.com) - IP: 172.23.0.1 - Path: /admin/jsi18n/
+2026-02-10 10:49:22.562662 - User: admin (admin@email.com) - IP: 172.23.0.1 - Path: /admin/security/suspiciousip/1/delete/
+2026-02-10 10:49:25.140822 - User: admin (admin@email.com) - IP: 172.23.0.1 - Path: /admin/security/suspiciousip/1/delete/
+2026-02-10 10:49:25.225640 - User: admin (admin@email.com) - IP: 172.23.0.1 - Path: /admin/security/suspiciousip/
+2026-02-10 10:49:25.433810 - User: admin (admin@email.com) - IP: 172.23.0.1 - Path: /admin/jsi18n/
+2026-02-10 10:49:30.153398 - User: admin (admin@email.com) - IP: 172.23.0.1 - Path: /admin/security/suspiciousip/
+2026-02-10 10:49:30.265636 - User: admin (admin@email.com) - IP: 172.23.0.1 - Path: /admin/jsi18n/
+2026-02-10 10:49:34.060882 - User: admin (admin@email.com) - IP: 172.23.0.1 - Path: /api/
+2026-02-10 10:49:35.843950 - User: admin (admin@email.com) - IP: 172.23.0.1 - Path: /api/ratings/
+2026-02-10 10:49:38.263406 - User: admin (admin@email.com) - IP: 172.23.0.1 - Path: /api/
+2026-02-10 10:49:39.409464 - User: admin (admin@email.com) - IP: 172.23.0.1 - Path: /api/watch-history/
+2026-02-10 10:49:40.648780 - User: admin (admin@email.com) - IP: 172.23.0.1 - Path: /api/
+2026-02-10 10:49:43.306102 - User: admin (admin@email.com) - IP: 172.23.0.1 - Path: /api/
+2026-02-10 10:49:44.342809 - User: admin (admin@email.com) - IP: 172.23.0.1 - Path: /api/users/
+2026-02-10 10:49:45.464516 - User: admin (admin@email.com) - IP: 172.23.0.1 - Path: /api/
+2026-02-10 10:49:48.652854 - User: admin (admin@email.com) - IP: 172.23.0.1 - Path: /admin/django_celery_beat/periodictask/
+2026-02-10 10:49:48.961504 - User: admin (admin@email.com) - IP: 172.23.0.1 - Path: /admin/jsi18n/
+2026-02-10 10:49:56.844362 - User: admin (admin@email.com) - IP: 172.23.0.1 - Path: /admin/security/suspiciousip/
+2026-02-10 10:49:57.084923 - User: admin (admin@email.com) - IP: 172.23.0.1 - Path: /admin/jsi18n/
+2026-02-10 10:50:11.987868 - User: admin (admin@email.com) - IP: 172.23.0.1 - Path: /admin/django_celery_beat/periodictask/
+2026-02-10 10:50:12.405044 - User: admin (admin@email.com) - IP: 172.23.0.1 - Path: /admin/jsi18n/
+2026-02-10 10:50:15.857388 - User: admin (admin@email.com) - IP: 172.23.0.1 - Path: /admin/django_celery_beat/periodictask/
+2026-02-10 10:50:16.220765 - User: admin (admin@email.com) - IP: 172.23.0.1 - Path: /admin/jsi18n/
+2026-02-10 10:51:26.453093 - User: admin (admin@email.com) - IP: 172.23.0.1 - Path: /admin/django_celery_beat/periodictask/
+2026-02-10 10:51:26.629637 - User: admin (admin@email.com) - IP: 172.23.0.1 - Path: /admin/jsi18n/
+2026-02-10 10:51:30.719125 - User: admin (admin@email.com) - IP: 172.23.0.1 - Path: /admin/security/suspiciousip/
+2026-02-10 10:51:31.225006 - User: admin (admin@email.com) - IP: 172.23.0.1 - Path: /admin/jsi18n/
+2026-02-10 10:51:42.686095 - User: admin (admin@email.com) - IP: 172.23.0.1 - Path: /admin/security/suspiciousip/2/change/
+2026-02-10 10:51:42.951464 - User: admin (admin@email.com) - IP: 172.23.0.1 - Path: /admin/jsi18n/
+2026-02-10 10:54:25.424839 - User: admin (admin@email.com) - IP: 172.23.0.1 - Path: /admin/security/blockedip/
+2026-02-10 10:54:25.585268 - User: admin (admin@email.com) - IP: 172.23.0.1 - Path: /admin/jsi18n/
+2026-02-10 10:54:38.399774 - User: admin (admin@email.com) - IP: 172.23.0.1 - Path: /api-auth/logout/
+2026-02-10 10:54:38.507797 - User: Anonymous - IP: 172.23.0.1 - Path: /api/
+2026-02-10 10:54:41.249222 - User: Anonymous - IP: 172.23.0.1 - Path: /api-auth/login/
+2026-02-10 10:54:45.955578 - User: Anonymous - IP: 172.23.0.1 - Path: /api-auth/login/
+2026-02-10 10:54:47.833071 - User: user1 (user1@email.com) - IP: 172.23.0.1 - Path: /api/
+2026-02-10 10:54:51.459162 - User: user1 (user1@email.com) - IP: 172.23.0.1 - Path: /api/movies/
+2026-02-10 10:54:53.809694 - User: user1 (user1@email.com) - IP: 172.23.0.1 - Path: /api/movies/recommended/
+2026-02-10 10:54:58.296826 - User: user1 (user1@email.com) - IP: 172.23.0.1 - Path: /api/movies/trending/
+2026-02-10 10:55:53.719835 - User: user1 (user1@email.com) - IP: 172.23.0.1 - Path: /api/movies/trending/
+2026-02-10 10:56:47.972127 - User: user1 (user1@email.com) - IP: 172.23.0.1 - Path: /api-auth/logout/
+2026-02-10 10:56:48.082770 - User: Anonymous - IP: 172.23.0.1 - Path: /api/movies/trending/
+2026-02-10 10:56:50.775111 - User: Anonymous - IP: 172.23.0.1 - Path: /api-auth/logout/
+2026-02-10 10:56:50.905470 - User: Anonymous - IP: 172.23.0.1 - Path: /api/movies/trending/
+2026-02-10 10:56:53.806779 - User: Anonymous - IP: 172.23.0.1 - Path: /api/
+2026-02-10 10:56:55.317107 - User: Anonymous - IP: 172.23.0.1 - Path: /api-auth/login/
+2026-02-10 10:56:58.912285 - User: Anonymous - IP: 172.23.0.1 - Path: /api-auth/login/
+2026-02-10 10:56:59.945874 - User: admin (admin@email.com) - IP: 172.23.0.1 - Path: /api/
+2026-02-10 10:57:04.992839 - User: admin (admin@email.com) - IP: 172.23.0.1 - Path: /admin/
+2026-02-10 10:57:08.055325 - User: admin (admin@email.com) - IP: 172.23.0.1 - Path: /admin/movies/rating/
+2026-02-10 10:57:08.472115 - User: admin (admin@email.com) - IP: 172.23.0.1 - Path: /admin/jsi18n/
+2026-02-10 10:57:12.929469 - User: admin (admin@email.com) - IP: 172.23.0.1 - Path: /admin/movies/rating/db125f34-df40-4645-a75b-7b3497b59a40/change/
+2026-02-10 10:57:13.240911 - User: admin (admin@email.com) - IP: 172.23.0.1 - Path: /admin/jsi18n/
+2026-02-10 10:57:23.665642 - User: admin (admin@email.com) - IP: 172.23.0.1 - Path: /admin/movies/rating/db125f34-df40-4645-a75b-7b3497b59a40/history/
+2026-02-10 10:57:28.600678 - User: admin (admin@email.com) - IP: 172.23.0.1 - Path: /admin/movies/watchhistory/
+2026-02-10 10:57:29.177186 - User: admin (admin@email.com) - IP: 172.23.0.1 - Path: /admin/jsi18n/

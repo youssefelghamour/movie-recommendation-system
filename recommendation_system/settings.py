@@ -49,8 +49,10 @@ INSTALLED_APPS = [
     'drf_yasg',
     'django_filters',
     'graphene_django',
+    'django_celery_beat',
 
     'movies',
+    'security',
 ]
 
 MIDDLEWARE = [
@@ -61,6 +63,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'security.middleware.SecurityMiddleware',
 ]
 
 ROOT_URLCONF = 'recommendation_system.urls'
@@ -176,4 +179,22 @@ CACHES = {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
     }
+}
+
+
+CELERY_BROKER_URL = "amqp://guest:guest@rabbitmq:5672//"
+CELERY_RESULT_BACKEND = "rpc://"
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TIMEZONE = 'UTC'
+CELERY_BEAT_SCHEDULER = "django_celery_beat.schedulers:DatabaseScheduler"
+
+from celery.schedules import crontab
+
+CELERY_BEAT_SCHEDULE = {
+    'detect-anomalies-hourly': {
+        'task': 'security.tasks.detect_anomalies',
+        'schedule': crontab(minute=0),  # Runs every hour
+    },
 }
