@@ -122,3 +122,14 @@
 2026-02-10 10:57:23.665642 - User: admin (admin@email.com) - IP: 172.23.0.1 - Path: /admin/movies/rating/db125f34-df40-4645-a75b-7b3497b59a40/history/
 2026-02-10 10:57:28.600678 - User: admin (admin@email.com) - IP: 172.23.0.1 - Path: /admin/movies/watchhistory/
 2026-02-10 10:57:29.177186 - User: admin (admin@email.com) - IP: 172.23.0.1 - Path: /admin/jsi18n/
+2026-02-10 11:21:53.919014 - User: admin (admin@email.com) - IP: 172.23.0.1 - Path: /api/movies/
+2026-02-10 11:22:29.928922 - User: admin (admin@email.com) - IP: 172.23.0.1 - Path: /api/movies/recommended/
+2026-02-10 11:27:17.150916 - User: admin (admin@email.com) - IP: 172.23.0.1 - Path: /api/movies/trending/
+2026-02-10 11:27:31.102835 - User: admin (admin@email.com) - IP: 172.23.0.1 - Path: /api/movies/trending/
+2026-02-10 11:35:01.089839 - User: admin (admin@email.com) - IP: 172.23.0.1 - Path: /api/movies/trending/
+2026-02-10 11:35:28.338327 - User: admin (admin@email.com) - IP: 172.23.0.1 - Path: /api/movies/trending/
+2026-02-10 11:36:18.367564 - User: admin (admin@email.com) - IP: 172.23.0.1 - Path: /api/movies/trending/
+2026-02-10 11:39:34.417219 - User: admin (admin@email.com) - IP: 172.23.0.1 - Path: /api/movies/trending/
+2026-02-10 11:39:39.828790 - User: admin (admin@email.com) - IP: 172.23.0.1 - Path: /api/movies/trending/
+2026-02-10 11:39:43.017563 - User: admin (admin@email.com) - IP: 172.23.0.1 - Path: /api/movies/trending/
+2026-02-10 11:39:45.436696 - User: admin (admin@email.com) - IP: 172.23.0.1 - Path: /api/movies/trending/

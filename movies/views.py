@@ -346,16 +346,15 @@ class MovieViewSet(viewsets.ModelViewSet):
                     recent_avg_rating * 0.6 + recent_watch_count * 0.4
                 5. Order and return the movies in descending order based on this score
         """
-        # Make sure the client doesn't go beyond the appropriate time window
-        allowed_days = [7, 30]
         try:
-            # Get the time window from the client or default to 10 previous days
-            days = int(request.query_params.get("days", 7))
+            # Get the time window from the client or default to 30 previous days
+            days = int(request.query_params.get("days", 30))
         except ValueError:
-            days = 7
+            days = 30
 
-        if days not in allowed_days:
-            days = 7
+        # Make sure the client doesn't go beyond the appropriate time window
+        if days < 7 or days > 30:
+            days = 30
 
         # The cutoff date so we only include movies after this date
         since = timezone.now() - timezone.timedelta(days=days)
