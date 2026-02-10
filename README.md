@@ -79,6 +79,22 @@ The API is fully documented with interactive explorers:
 ### GraphQL
 [**GraphQL API**](https://youssefelghamour.pythonanywhere.com/graphql/)
 
+## Security & Anomaly Detection
+
+The dedicated **Security App** protects the system from manipulation and malicious actors using a multi-layer approach.
+
+### IP Tracking & Middleware
+*   **Request Logging:** Every request logs the `ip_address`, `timestamp`, `user`, and `path` to a dedicated `requests.log` file.
+*   **Blacklisting:** Incoming IPs are checked against a `BlockedIP` database. If a match is found, the system returns **403 Forbidden**.
+*   **Redis Tracking:** Timestamps of every request are stored in Redis per IP. This allows for sub-second tracking of request frequency.
+
+### Background Audits (Celery & RabbitMQ)
+We use **Celery Beat** with **RabbitMQ** to run scheduled security tasks without slowing down the API:
+*   **Anomaly Detection:** A task runs periodically to check the Redis request logs. If an IP exceeds **30,000 requests/hour**, it is automatically flagged in the `SuspiciousIP` table for review.
+*   **Management CLI:** Administrators can manually block malicious IPs directly from the terminal:
+    ```bash
+    python manage.py block_ip <ip_address>
+    ```
 
 ## Installation & Setup
 
@@ -105,32 +121,53 @@ This method automatically sets up your Python environment, PostgreSQL database, 
 
 ### Method 2: Manual Setup
 
-Use this if you prefer to run the components separately. Ensure **PostgreSQL** and **Redis** are running on your machine.
+Use this if you prefer to run the components separately. Ensure **PostgreSQL**, **Redis**, and **RabbitMQ** are installed and running on your machine.
 
 1.  **Virtual Environment:**
     ```bash
     python -m venv venv
     source venv/bin/activate  # On Windows: venv\Scripts\activate
     ```
+
 2.  **Requirements:**
     ```bash
     pip install -r requirements.txt
     ```
-3. **Configure the Database:** Create a PostgreSQL database and update your environment variables or settings.py to match your local credentials.
-4.  **Database Config:**
-    Update your `settings.py` or `.env` with your local DB credentials, then migrate:
+
+3.  **Database & Environment:**
+    Create a PostgreSQL database and update your `.env` file with your credentials (`DB_NAME`, `DB_USER`, `DB_PASSWORD`, `DB_HOST` to localhost). Ensure your `CELERY_BROKER_URL` points to your local RabbitMQ instance in settings.py:
+    ```env
+    CELERY_BROKER_URL=amqp://guest:guest@localhost:5672//
+    ```
+
+4.  **Database Migrations:**
     ```bash
     python manage.py migrate
     ```
+
 5.  **Seed Data:**
-    This command creates test users and imports movies from the provided `movies.csv`, and creates ratings and a watch history for all users.
+    This command creates test users, imports movies from `movies.csv`, and generates initial ratings and watch history.
     ```bash
     python manage.py seed
     ```
-6.  **Start Server:**
-    ```bash
-    python manage.py runserver
-    ```
+
+6.  **Start Services:**
+    Open three separate terminals to run the following:
+
+    *   **Terminal 1 (Django Server):**
+        ```bash
+        python manage.py runserver
+        ```
+
+    *   **Terminal 2 (Celery Worker):**
+        ```bash
+        celery -A recommendation_system worker -l info --pool=solo
+        ```
+
+    *   **Terminal 3 (Celery Beat Scheduler):**
+        ```bash
+        celery -A recommendation_system beat -l info
+        ```
 
 ## API Endpoints
 
@@ -194,8 +231,3 @@ The API also exposes a **GraphQL endpoint** allowing clients to fetch movies, ra
 
 - **Endpoint:** `/graphql/`
 - **Documentation & Examples:** See the dedicated [GraphQL Guide](./GRAPHQL-GUIDE.md)
-
-### Next Steps
-*   **Advanced Security:** Implement a dedicated Django app for IP tracking/blocking with management commands and middlewares, automated blacklisting, detecting anomalies with Celery tasks, and rate limiting.
-*   **Background Tasks:** Integrate **Celery & Celery Beat with RabbitMQ** for scheduled security audits, detecting and flagging suspicious IPs, database and cache cleanup, and automated logging.
-*   **Orchestration:** Transition from Docker Compose to **Kubernetes (K8s)** for automated scaling and high availability.
